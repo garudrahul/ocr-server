@@ -10,10 +10,12 @@ app = Flask(__name__)
 CORS(app)
 
 # Initialize EasyOCR Reader (English)
-reader = easyocr.Reader(['en'])
+def get_reader():
+    return easyocr.Reader(['en'])
 
 @app.route('/verify', methods=['POST'])
 def verify_text():
+    reader = get_reader()  # Load model only here
     if 'image' not in request.files:
         return jsonify({"error": "Image is required"}), 400
     if 'texts' not in request.form:
